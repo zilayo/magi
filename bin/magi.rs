@@ -79,6 +79,7 @@ impl Cli {
             "base" => ChainConfig::base(),
             "base-goerli" => ChainConfig::base_goerli(),
             "base-sepolia" => ChainConfig::base_sepolia(),
+            "mode" => ChainConfig::mode(),
             file if file.ends_with(".json") => ChainConfig::from_json(file),
             _ => panic!(
                 "Invalid network name. \\

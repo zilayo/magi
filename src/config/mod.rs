@@ -459,6 +459,44 @@ impl ChainConfig {
             blocktime: 2,
         }
     }
+
+    pub fn mode() -> Self {
+        Self {
+            network: "mode".to_string(),
+            l1_chain_id: 1,
+            l2_chain_id: 34443,
+            l1_start_epoch: Epoch {
+                number: 18586927,
+                hash: hash("0xf9b1b22a7ef9d13f063ea467bcb70fb6e9f29698ecb7366a2cdf5af2165cacee"),
+                timestamp: 1700167583,
+            },
+            l2_genesis: BlockInfo {
+                hash: hash("0xf712aa9241cc24369b143cf6dce85f0902a9731e70d66818a3a5845b296c73dd"),
+                number: 0,
+                parent_hash: H256::zero(),
+                timestamp: 1700167583,
+            },
+            system_config: SystemConfig {
+                batch_sender: addr("0x99199a22125034c808ff20f377d91187e8050f2e"),
+                gas_limit: U256::from(30_000_000),
+                l1_fee_overhead: U256::from(188),
+                l1_fee_scalar: U256::from(684_000),
+                unsafe_block_signer: addr("0xa7fA9CA4ac88686A542C0f830d7378eAB4A0278F"),
+            },
+            batch_inbox: addr("0x24e59d9d3bd73ccc28dc54062af7ef7bff58bd67"),
+            deposit_contract: addr("0x8b34b14c7c7123459cf3076b8cb929be097d0c07"),
+            system_config_contract: addr("0x5e6432f18bc5d497b1ab2288a025fbf9d69e2221"),
+            l2_to_l1_message_passer: addr("0x4200000000000000000000000000000000000016"),
+            max_channel_size: 100_000_000,
+            channel_timeout: 300,
+            seq_window_size: 3600,
+            max_seq_drift: 600,
+            blocktime: 2,
+            regolith_time: 0,
+            canyon_time: 1704992401,
+            delta_time: u64::MAX,
+        }
+    }
 }
 
 impl Default for SystemAccounts {
