@@ -109,8 +109,10 @@ fn compute_l2_output_root(block: Block<H256>, storage_root: H256) -> H256 {
 
 pub async fn run_server(config: Arc<Config>) -> Result<SocketAddr> {
     let port = config.rpc_port;
+    let addr = config.rpc_addr.clone();
+
     let server = ServerBuilder::default()
-        .build(format!("127.0.0.1:{}", port))
+        .build(format!("{}:{}", addr, port))
         .await?;
     let addr = server.local_addr()?;
     let rpc_impl = RpcServerImpl {
