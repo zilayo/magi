@@ -25,10 +25,13 @@ impl Handler for BlockHandler {
         tracing::debug!("received block");
 
         let decoded = if msg.topic == self.blocks_v1_topic.hash() {
+            tracing::debug!("v1 payload received");
             decode_block_msg::<ExecutionPayloadV1SSZ>(msg.data)
         } else if msg.topic == self.blocks_v2_topic.hash() {
+            tracing::debug!("v2 payload received");
             decode_block_msg::<ExecutionPayloadV2SSZ>(msg.data)
         } else {
+            tracing::debug!("invalid msg.topic: {:?}", msg.topic);
             return MessageAcceptance::Reject;
         };
 
@@ -38,7 +41,11 @@ impl Handler for BlockHandler {
                     _ = self.block_sender.send(payload);
                     MessageAcceptance::Accept
                 } else {
-                    tracing::warn!("invalid unsafe block");
+                    tracing::warn!(
+                        "invalid unsafe block {:?} - {:?}",
+                        payload.block_number,
+                        payload.block_hash
+                    );
                     MessageAcceptance::Reject
                 }
             }
@@ -90,6 +97,23 @@ impl BlockHandler {
         let msg = payload_hash.signature_message(self.chain_id);
         let block_signer = *self.unsafe_signer_recv.borrow();
         let sig_valid = sig.verify(msg, block_signer).is_ok();
+
+        if !time_valid {
+            tracing::warn!(
+                "time {:?} invalid for block {:?} - {:?}",
+                payload.timestamp.as_u64(),
+                payload.block_number,
+                payload.block_hash
+            )
+        }
+
+        if !sig_valid {
+            tracing::warn!(
+                "sig invalid for block {:?} - {:?}",
+                payload.block_number,
+                payload.block_hash
+            )
+        }
 
         time_valid && sig_valid
     }
