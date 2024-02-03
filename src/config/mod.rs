@@ -477,7 +477,7 @@ impl ChainConfig {
                 timestamp: 1700167583,
             },
             l2_genesis: BlockInfo {
-                hash: hash("0xf712aa9241cc24369b143cf6dce85f0902a9731e70d66818a3a5845b296c73dd"),
+                hash: hash("0xb0f682e12fc555fd5ce8fce51a59a67d66a5b46be28611a168260a549dac8a9b"),
                 number: 0,
                 parent_hash: H256::zero(),
                 timestamp: 1700167583,
