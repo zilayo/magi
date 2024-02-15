@@ -117,6 +117,10 @@ pub struct CliConfig {
     /// The port to serve the Magi RPC on.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub rpc_port: Option<u16>,
+    /// The socket address to serve the Magi RPC on.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub rpc_addr: Option<String>,
+    /// If devnet is enabled.
     #[serde(default)]
     pub devnet: bool,
 }
@@ -238,7 +242,7 @@ impl Default for DefaultsProvider {
             l2_rpc_url: "http://127.0.0.1:8545".to_string(),
             l2_engine_url: "http://127.0.0.1:8551".to_string(),
             rpc_port: 9545,
-            rpc_addr: "0.0.0.0".to_string(),
+            rpc_addr: "127.0.0.1".to_string(),
         }
     }
 }
@@ -260,6 +264,7 @@ impl ChainConfig {
             "base" => Self::base(),
             "base-goerli" => Self::base_goerli(),
             "base-sepolia" => Self::base_sepolia(),
+            "mode" => Self::mode(),
             file if file.ends_with(".json") => Self::from_json(file),
             _ => panic!(
                 "Invalid network name. \\
@@ -509,6 +514,7 @@ impl ChainConfig {
         }
     }
 
+    /// [ChainConfig] for Mode Mainnet
     pub fn mode() -> Self {
         Self {
             network: "mode".to_string(),
@@ -543,7 +549,7 @@ impl ChainConfig {
             blocktime: 2,
             regolith_time: 0,
             canyon_time: 1704992401,
-            delta_time: u64::MAX,
+            delta_time: 1703203200,
         }
     }
 }
